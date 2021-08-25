@@ -4,9 +4,9 @@ COVID 19 DATA EXPLORATION
 Skills used: JOINs, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
 */
 
---SELECT *
---FROM PortifolioProject.dbo.CovidDeaths
---ORDER BY 3,4
+SELECT *
+FROM PortifolioProject.dbo.CovidDeaths
+ORDER BY 3,4
 
 --SELECT *
 --FROM PortifolioProject.dbo.CovidVaccinations
@@ -30,13 +30,22 @@ SELECT
 FROM PortifolioProject.dbo.CovidDeaths
 ORDER BY 1,2
 
--- Countries with Highest Infection Rate compared to Population
+--Tableau 3. Countries with Highest Infection Rate compared to Population
 SELECT
 	location, population,
 	MAX(CAST(Total_deaths AS float)) AS HighestInfectionCount,
 	ROUND(MAX((CAST(Total_deaths AS float)/population))*100,4) AS PercentPopulationInfected
 FROM PortifolioProject.dbo.CovidDeaths
 GROUP BY location, population
+ORDER BY PercentPopulationInfected DESC
+
+--Tableau 4. Countries with Highest Infection Rate compared to Population by date
+SELECT
+	location, population, date,
+	MAX(CAST(Total_deaths AS float)) AS HighestInfectionCount,
+	ROUND(MAX((CAST(Total_deaths AS float)/population))*100,4) AS PercentPopulationInfected
+FROM PortifolioProject.dbo.CovidDeaths
+GROUP BY location, population, date
 ORDER BY PercentPopulationInfected DESC
 
 -- Countries with Highest Death Count per Population
@@ -64,7 +73,7 @@ ORDER BY TotalDeathCount DESC
 
 
 -- GLOBAL NUMBERS
-
+-- Tableau 1. Total new cases and deaths
 SELECT
 	SUM(CAST(new_cases AS float)) AS total_cases,
 	SUM(CAST(new_deaths AS float)) AS total_deaths,
@@ -75,8 +84,30 @@ WHERE continent is not null
 --GROUP BY date
 ORDER BY 1,2
 
-SELECT * FROM PortifolioProject.dbo.CovidVaccinations
 
+SELECT 
+	location, 
+	SUM(CAST(new_deaths AS float)) AS TotalDeathCount
+FROM PortifolioProject.dbo.CovidDeaths
+--WHERE location like '%states%'
+WHERE continent is not null 
+GROUP BY location
+ORDER BY TotalDeathCount DESC
+
+--Tableau 2. Continental Death cases
+SELECT 
+	continent, 
+	SUM(CAST(new_deaths AS float)) AS TotalDeathCount
+FROM PortifolioProject.dbo.CovidDeaths
+--WHERE location like '%states%'
+WHERE continent is not null 
+AND continent not in ('world', 'European Union', 'International')
+GROUP BY continent
+ORDER BY TotalDeathCount DESC
+
+
+
+SELECT * FROM PortifolioProject.dbo.CovidVaccinations
 
 -- Total Population vs Vaccinations
 -- Shows Percentage of Population that has recieved at least one Covid Vaccine
@@ -115,7 +146,7 @@ WHERE dea.continent is not null
 )
 SELECT *, (RollingPeopleVaccinated/Population)*100 AS 'PercentPeopleVaccinated'
 FROM PopvsVac
-WHERE location = 'italy'
+--WHERE location = 'italy'
 
 
 -- Using Temp Table to perform Calculation on Partition By in previous query
@@ -147,7 +178,7 @@ JOIN PortifolioProject.dbo.CovidVaccinations vac
 
 
 -- Creating View to store data for later visualizations
-Create View PercentPopulationVaccinated AS
+CREATE VIEW PercentPopulationVaccinated AS
 SELECT 
 	dea.continent, 
 	dea.location, 
