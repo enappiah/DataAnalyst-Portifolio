@@ -16,4 +16,4 @@ Data Source: https://ourworldindata.org/covid-deaths
 SQL query results are used to create dashboard visualization using tableau public and can be accessed on:
 https://public.tableau.com/app/profile/enoch.n.appiah/viz/COVIDDashboard-simple/Dashboard1?publish=yes
 
-Similar or improved dashboard will be carried out using both PowerBI and Google Data Studio.
+Similar or improved dashboard will be carried out using both Microsoft PowerBI and Google Data Studio.
