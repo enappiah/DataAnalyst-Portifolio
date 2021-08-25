@@ -12,5 +12,5 @@ Data Source: https://ourworldindata.org/covid-deaths
 
 ## 2. TABLEAU VISUALIZATION PROJECT
 -------------------------
-SQL query results are used to create dashboard visualization uusing tableau public and can be accessed on:
+SQL query results are used to create dashboard visualization using tableau public and can be accessed on:
 https://public.tableau.com/app/profile/enoch.n.appiah/viz/COVIDDashboard-simple/Dashboard1?publish=yes
